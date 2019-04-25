@@ -7,35 +7,31 @@ import Filter from './Filter.js';
 import { getAll, getById } from '../api/phones.js';
 
 export default class PhonesPage extends React.Component {
-  constructor(props) {
-    super(props);
+  state = {
+    phones: [],
+    query: '',
+    order: 'name',
+    selectedPhone: null,
+    items: {
+      qweqwe: 2,
+      dfsdfgdfg: 1,
+    },
+  };
 
-    this.state = {
-      phones: [],
-      query: '',
-      order: 'name',
-      selectedPhone: null,
-      items: {
-        qweqwe: 2,
-        dfsdfgdfg: 1,
-      },
-    };
+  onPhoneSelected = (phoneId) => this.selectedPhone(phoneId);
+  onAdd = (phoneId) => this.addItem(phoneId);
+  onBack = () => this.setState({ selectedPhone: null });
+  onRemove = (itemToRemove) => this.removeItem(itemToRemove);
 
-    this.onPhoneSelected = (phoneId) => this.selectedPhone(phoneId);
-    this.onAdd = (phoneId) => this.addItem(phoneId);
-    this.onBack = () => this.setState({ selectedPhone: null });
-    this.onRemove = (itemToRemove) => this.removeItem(itemToRemove);
+  onQueryChange = (query) => {
+    this.setState({ query });
+    this.loadPhones();
+  };
 
-    this.onQueryChange = (query) => {
-      this.setState({ query });
-      this.loadPhones();
-    };
-
-    this.onOrderChange = (order) => {
-      this.setState({ order });
-      this.loadPhones();
-    };
-  }
+  onOrderChange = (order) => {
+    this.setState({ order });
+    this.loadPhones();
+  };
 
   componentDidMount() {
     this.loadPhones();
@@ -78,8 +74,8 @@ export default class PhonesPage extends React.Component {
 
   render() {
     return (
-      <div class="row">
-        <div class="col-md-2">
+      <div className="row">
+        <div className="col-md-2">
           <section>
             <Filter
               onQueryChange={this.onQueryChange}
@@ -95,7 +91,7 @@ export default class PhonesPage extends React.Component {
           </section>
         </div>
 
-        <div class="col-md-10">
+        <div className="col-md-10">
           {this.state.selectedPhone ? (
             <PhoneViewer
               phone={this.state.selectedPhone}
