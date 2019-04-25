@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export default class PhonesCatalog extends React.Component {
   render() {
@@ -7,13 +8,12 @@ export default class PhonesCatalog extends React.Component {
         <ul className="phones">
           {this.props.phones.map(phone => (
             <li className="thumbnail">
-              <a
-                onClick={() => this.props.onPhoneSelected(phone.id)}
-                href={`#!/phones/${phone.id}`}
+              <Link
+                to={`/phones/${phone.id}`}
                 className="thumb"
               >
                 <img alt={phone.name} src={phone.imageUrl} />
-              </a>
+              </Link>
 
               <div className="phones__btn-buy-wrapper">
                 <a
@@ -24,12 +24,9 @@ export default class PhonesCatalog extends React.Component {
                 </a>
               </div>
 
-              <a
-                onClick={() => this.props.onPhoneSelected(phone.id)}
-                href={`#!/phones/${phone.id}`}
-              >
+              <Link to={`/phones/${phone.id}`}>
                 {phone.name}
-              </a>
+              </Link>
 
               <p>{phone.snippet}</p>
             </li>

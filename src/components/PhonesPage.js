@@ -1,4 +1,5 @@
 import React from 'react';
+import { Switch, Route } from 'react-router-dom'
 
 import PhonesCatalog from './PhonesCatalog.js';
 import PhoneViewer from './PhoneViewer.js';
@@ -20,7 +21,6 @@ export default class PhonesPage extends React.Component {
 
   onPhoneSelected = (phoneId) => this.selectedPhone(phoneId);
   onAdd = (phoneId) => this.addItem(phoneId);
-  onBack = () => this.setState({ selectedPhone: null });
   onRemove = (itemToRemove) => this.removeItem(itemToRemove);
 
   onQueryChange = (query) => {
@@ -66,10 +66,7 @@ export default class PhonesPage extends React.Component {
   }
 
   selectedPhone(phoneId) {
-    getById(phoneId)
-      .then(phone => {
-        this.setState({ selectedPhone: phone });
-      });
+
   }
 
   render() {
@@ -92,19 +89,21 @@ export default class PhonesPage extends React.Component {
         </div>
 
         <div className="col-md-10">
-          {this.state.selectedPhone ? (
-            <PhoneViewer
-              phone={this.state.selectedPhone}
-              onBack={this.onBack}
-              onAdd={this.onAdd}
-            />
-          ) : (
-            <PhonesCatalog
-              phones={this.state.phones}
-              onPhoneSelected={this.onPhoneSelected}
-              onAdd={this.onAdd}
-            />
-          )}
+          <Switch>
+            <Route exact path="/phones" render={() => (
+              <PhonesCatalog
+                phones={this.state.phones}
+                onAdd={this.onAdd}
+              />
+            )}/>
+
+            <Route path="/phones/:phoneId" render={(props) => (
+              <PhoneViewer
+                phoneId={props.match.params.phoneId}
+                onAdd={this.onAdd}
+              />
+            )}/>
+          </Switch>
         </div>
       </div>
     );
